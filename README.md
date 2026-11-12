@@ -1,3 +1,5 @@
+[A live Chatbot](https://app-langchain-ai-app-nawaz-ali.streamlit.app/?embed_options=dark_theme,show_footer,show_colored_line,show_toolbar,light_theme,show_padding,disable_scrolling)
+
 # Deploy a Streaming LangChain Chatbot
 
 This Streamlit demo uses a LangChain agent with streaming responses and short-term memory. The viewer chooses Groq or OpenAI and enters one API key in the sidebar.
