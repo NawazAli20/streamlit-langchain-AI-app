@@ -2,6 +2,8 @@
 
 # Deploy a Streaming LangChain Chatbot
 
+![Deploy a Streaming Chatbot — LangChain + Streamlit](assets/streamlit-chatbot-youtube-banner.png)
+
 This Streamlit demo uses a LangChain agent with streaming responses and short-term memory. The viewer chooses Groq or OpenAI and enters one API key in the sidebar.
 
 | Provider | Model |
@@ -41,3 +43,25 @@ Open the local URL printed in the terminal and enter a provider API key. API usa
 - Each browser session has its own `InMemorySaver` and thread ID. Each request submits the newest message, and the agent reads the earlier turns from its checkpoint. Reloading the page, restarting the app, or selecting **New chat** starts a fresh conversation.
 - The agent streams model text with `stream_mode="messages"`. Streamlit updates the answer in place as text arrives.
 - The app server receives the password-field value and passes it to the selected provider client. The app keeps the key out of chat history and checkpoints. Use an API key only with a deployment you trust, or run the demo locally.
+
+## Streamlit widgets and components
+
+| Widget or component | What it does in this chatbot |
+| --- | --- |
+| [`st.selectbox()`](https://docs.streamlit.io/develop/api-reference/widgets/st.selectbox) | Displays a dropdown for choosing Groq or OpenAI. The selection determines which model and API key field the app uses. |
+| [`st.text_input()`](https://docs.streamlit.io/develop/api-reference/widgets/st.text_input) | Collects the selected provider’s API key. Setting `type="password"` masks the characters on screen. |
+| [`st.button()`](https://docs.streamlit.io/develop/api-reference/widgets/st.button) | Displays **New chat**. Clicking it clears the visible history and starts a new conversation thread. |
+| [`st.chat_input()`](https://docs.streamlit.io/develop/api-reference/chat/st.chat_input) | Collects the user’s prompt. The app disables it while the API key field is empty. |
+| [`st.chat_message()`](https://docs.streamlit.io/develop/api-reference/chat/st.chat_message) | Creates a message container for the user or assistant. The app also uses it to redraw earlier messages. |
+| [`st.sidebar`](https://docs.streamlit.io/develop/api-reference/layout/st.sidebar) | Places the provider selector, API key field, and **New chat** button alongside the conversation. |
+| [`st.empty()`](https://docs.streamlit.io/develop/api-reference/layout/st.empty) | Creates a placeholder inside the assistant’s message. The app updates the same placeholder with `response.markdown(...)` as each text chunk arrives. |
+| [`st.status()`](https://docs.streamlit.io/develop/api-reference/status/st.status) | Shows that a response is being generated. The app calls `status.update()` to mark it complete or failed. |
+| [`st.info()`](https://docs.streamlit.io/develop/api-reference/status/st.info) | Prompts the user to select a provider and enter an API key. |
+| [`st.error()`](https://docs.streamlit.io/develop/api-reference/status/st.error) | Displays a request error, such as a rejected key or a rate limit. |
+| [`st.title()`](https://docs.streamlit.io/develop/api-reference/text/st.title) | Displays the main chatbot heading. |
+| [`st.caption()`](https://docs.streamlit.io/develop/api-reference/text/st.caption) | Displays the selected model ID and explanatory text in the sidebar. |
+| [`st.markdown()`](https://docs.streamlit.io/develop/api-reference/text/st.markdown) | Renders formatted messages and the provider’s API key link. |
+| [`st.session_state`](https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state) | Keeps the visible chat history, thread ID, and agent checkpointer available across Streamlit reruns within the browser session. |
+| [`st.set_page_config()`](https://docs.streamlit.io/develop/api-reference/config/st.set_page_config) | Sets the browser tab title and icon. |
+
+[Browse the full Streamlit API reference](https://docs.streamlit.io/develop/api-reference).
